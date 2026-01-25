@@ -1,101 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Ave Presentation</title>
+    <meta charset="utf-8">
+    <title>Master Control - 20 Slides (16:9)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    
     <style>
         :root {
-            --bg-color: #f4f1ea; /* Màu giấy mộc mạc */
-            --text-color: #2c3e50;
-            --accent-color: #5d5cde; /* Màu xanh AI nhẹ nhàng */
-        }
-
-        body, html {
-            margin: 0; padding: 0;
-            height: 100%; overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
-        /* Khung hiển thị slide */
-        #slide-container {
-            width: 100vw;
-            height: 100vh;
+			--bg-color: #EEF3F6;      /* nền sáng */
+			--accent-color: #0077b6;
+			--glass-bg: rgba(0,0,0,0.05);
+		}
+        
+        .reveal-viewport { background-color: var(--bg-color) !important; }
+        
+        .slide-container {
+            width: 100%;
+            height: 100%;
             border: none;
         }
 
-        /* Thanh điều hướng */
-        .controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            z-index: 1000;
+        .reveal .slides section {
+            padding: 0;
+            height: 100%;
         }
 
-        button {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid #ccc;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
+        /* --- THIẾT KẾ PHÂN TRANG (GÓC TRÁI DƯỚI) --- */
+        .reveal .slide-number {
+            display: block !important;
+            left: 25px !important;
+            right: auto !important;
+            bottom: 25px !important;
+            background-color: var(--glass-bg) !important;
+            color: var(--accent-color) !important;
+            font-family: 'Courier New', monospace;
+            padding: 6px 15px !important;
+            border-radius: 20px; /* Bo tròn hơn cho hiện đại */
+            font-size: 14px !important;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            backdrop-filter: blur(8px);
+            
+            /* LOẠI BỎ GẠCH CHÂN TRIỆT ĐỂ */
+            text-decoration: none !important; 
+            box-shadow: none !important;
         }
 
-        button:hover {
-            background: var(--accent-color);
-            color: white;
+        /* Đảm bảo link bên trong số trang (nếu có) cũng không bị gạch chân */
+        .reveal .slide-number a {
+            text-decoration: none !important;
+            color: inherit !important;
+            border: none !important;
         }
 
-        .page-number {
-            font-size: 0.9em;
-            opacity: 0.6;
+        /* --- WIDGET NGÀY THÁNG (TRUNG TÂM DƯỚI) --- */
+        #date-display {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            letter-spacing: 3px;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
+        /* --- THANH TIẾN TRÌNH --- */
+        .reveal .progress {
+            height: 3px !important;
+            color: var(--accent-color) !important;
         }
     </style>
 </head>
 <body>
+    <div class="reveal">
+        <div id="date-display"></div>
 
-    <iframe id="slide-container" src="slide1.html"></iframe>
+        <div class="slides">
 
-    <div class="controls">
-        <span class="page-number" id="page-info">1 / 20</span>
-        <button onclick="prevSlide()">❮ Trước</button>
-        <button onclick="nextSlide()">Sau ❯</button>
+			<!-- Slide 0: Poster project -->
+			<section>
+				<iframe class="slide-container" src="slides/slide-0.html"></iframe>
+			</section>
+
+			<!-- 20 slide nội dung -->
+			<script>
+				for (let i = 1; i <= 20; i++) {
+					document.write(`
+						<section>
+							<iframe class="slide-container" src="slides/slide-${i}.html"></iframe>
+						</section>
+					`);
+				}
+			</script>
+
+		</div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
     <script>
-        let currentSlide = 1;
-        const totalSlides = 20;
-        const iframe = document.getElementById('slide-container');
-        const pageInfo = document.getElementById('page-info');
-
-        function updateSlide() {
-            iframe.src = `slide${currentSlide}.html`;
-            pageInfo.innerText = `${currentSlide} / ${totalSlides}`;
+        // Hàm cập nhật ngày tháng
+        function updateDate() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            document.getElementById('date-display').innerText = `${day} . ${month} . ${year}`;
         }
+        updateDate();
 
-        function nextSlide() {
-            if (currentSlide < totalSlides) {
-                currentSlide++;
-                updateSlide();
-            }
-        }
-
-        function prevSlide() {
-            if (currentSlide > 1) {
-                currentSlide--;
-                updateSlide();
-            }
-        }
-
-        // Hỗ trợ phím mũi tên
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "ArrowRight") nextSlide();
-            if (e.key === "ArrowLeft") prevSlide();
+        // Khởi tạo Reveal.js với các thông số tối ưu
+        Reveal.initialize({
+            width: 1280,
+            height: 720,
+            margin: 0,
+            minScale: 0.2,
+            maxScale: 2.0,
+            controls: true,
+            progress: true,
+            hash: true,
+            
+            // Định dạng hiển thị phân trang
+            slideNumber: 'c / t', 
+            
+            transition: 'fade',
+            backgroundTransition: 'fade'
         });
     </script>
 </body>

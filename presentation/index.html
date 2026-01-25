@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Ave Presentation</title>
+    <style>
+        :root {
+            --bg-color: #f4f1ea; /* Màu giấy mộc mạc */
+            --text-color: #2c3e50;
+            --accent-color: #5d5cde; /* Màu xanh AI nhẹ nhàng */
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Khung hiển thị slide */
+        #slide-container {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+
+        /* Thanh điều hướng */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        button {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .page-number {
+            font-size: 0.9em;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="slide-container" src="slide1.html"></iframe>
+
+    <div class="controls">
+        <span class="page-number" id="page-info">1 / 20</span>
+        <button onclick="prevSlide()">❮ Trước</button>
+        <button onclick="nextSlide()">Sau ❯</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 20;
+        const iframe = document.getElementById('slide-container');
+        const pageInfo = document.getElementById('page-info');
+
+        function updateSlide() {
+            iframe.src = `slide${currentSlide}.html`;
+            pageInfo.innerText = `${currentSlide} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Hỗ trợ phím mũi tên
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowRight") nextSlide();
+            if (e.key === "ArrowLeft") prevSlide();
+        });
+    </script>
+</body>
+</html>
